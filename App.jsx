@@ -355,6 +355,11 @@ function App() {
           </div>
         )}
       </div>
+      {activeSection === 'extras' && (
+          <div className="section-block">
+            <Resources />
+          </div>
+        )}
     </div>
   );
 }
