@@ -311,15 +311,37 @@ const Services = () => {
     const [patientId, setPatientId] = useState('');
     const [doctorType, setDoctorType] = useState('');
 
-    const handleDoctorLogin = (e) => {
+    const handleDoctorLogin = async (e) => {
       e.preventDefault();
       if (loginName && patientId && doctorType) {
-        setDoctorLoggedIn(true);
-        setActiveSection('assessment');  // Navigate to assessment directly on login success
+          try {
+              const response = await fetch('http://localhost:8000/api/verify-patient/', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ unique_id: patientId }),
+              });
+  
+              if (response.ok) {
+                const data = await response.json();
+                if (data.message === 'Patient found') {  // Update this condition
+                    setDoctorLoggedIn(true);
+                    setActiveSection('assessment');  // Navigate to assessment directly on login success
+                } else {
+                    alert(data.message);  // Use the message returned from the server
+                }
+            } else {
+                alert('Error verifying patient ID.');
+            }
+            
+          } catch (error) {
+              alert('Network error: ' + error.message);
+          }
       } else {
-        alert('Please fill all the fields.');
+          alert('Please fill all the fields.');
       }
-    };
+  };
 
     return (
       <div>
