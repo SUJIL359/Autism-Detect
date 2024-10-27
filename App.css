@@ -3,9 +3,9 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f7f9fc; /* Light background for a clean look */
-  color: #333; /* Darker text for better contrast */
-}
+  background-color: #f7f9fc; /* Light background for a clean look */ 
+  color: #333; /* Darker text for better contrast */  
+} 
 
 .app-container {
   display: flex;
@@ -54,6 +54,7 @@ nav ul li:hover {
   display: flex;
   flex-direction: column;
   gap: 20px; /* Space between sections */
+  align-items: center; /* Center child elements horizontally */
 }
 
 h2 {
@@ -66,6 +67,8 @@ h3 {
 }
 
 .section-block {
+  width: 100%; /* Ensure the section takes full width for better centering */
+  max-width: 800px; /* Optional: set a max-width for the section blocks */
   background-color: #ecf0f1; /* Light grey background for section blocks */
   border: 1px solid #bdc3c7; /* Soft border color */
   border-radius: 10px;
@@ -152,3 +155,4 @@ button:disabled {
   background-color: #bdc3c7; /* Disabled button color */
   cursor: not-allowed;
 }
+
