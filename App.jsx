@@ -33,11 +33,25 @@ const Services = () => {
   const [gender, setGender] = useState('male'); // Default gender
   const [uniqueId, setUniqueId] = useState(''); // Define state for unique ID
 
-  const handlePersonalDataSubmit = (event) => {
+  const handlePersonalDataSubmit = async (event) => {
     event.preventDefault();
     const generatedId = `ID-${Math.floor(Math.random() * 10000)}`;
     setUniqueId(generatedId);
-    console.log({ name, age, gender, uniqueId: generatedId });
+  
+    const response = await fetch('http://localhost:8000/api/register/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, age, gender, unique_id: generatedId }), // Pass generatedId as unique_id
+    });
+  
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Data saved successfully:", data);
+    } else {
+      console.error('Failed to register patient');
+    }
   };
 
   return (
@@ -73,6 +87,8 @@ const Services = () => {
     </div>
   );
 };
+
+
 
 
 
