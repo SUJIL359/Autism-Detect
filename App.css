@@ -3,19 +3,25 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f7f9fc; /* Light background for a clean look */ 
-  color: #333; /* Darker text for better contrast */  
-} 
+  background-image: url('path/to/your/background.jpg'); /* Background image for the entire body */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #333;
+}
 
 .app-container {
   display: flex;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
 }
 
 nav {
-  width: 250px;
-  background-color: #0f1e2e; /* Darker navigation background */
+  width: 350px; /* Widened navigation width */
+  background-image: url('src/assets/bag2.jpg'); /* Background image for the nav section */
+  background-size: cover;
+  background-position: center;
   color: white;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
@@ -36,52 +42,55 @@ nav ul li {
   margin: 10px 0;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #1c3247; /* Darker block background */
+  background-color: #1c3247; /* Darker block background for readability */
   transition: background-color 0.3s, transform 0.2s;
 }
 
 nav ul li:hover {
-  background-color: #1abc9c; /* Hover effect for navigation */
+  background-color: #1abc9c;
   transform: scale(1.05);
 }
 
 .content {
   flex-grow: 1;
   padding: 20px;
-  background-color: #ffffff; /* White background for content */
-  border-left: 2px solid #2c3e50; /* Matching border with navigation */
+  background-color: #ffffff;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Space between sections */
-  align-items: center; /* Center child elements horizontally */
+  gap: 20px;
+  align-items: center;
 }
 
 h2 {
-  color: #1e00ff; /* Primary header color */
+  color: #1e00ff;
   text-align: center;
 }
 
 h3 {
-  color: #8e44ad; /* Secondary header color */
+  color: #8e44ad;
 }
 
 .section-block {
-  width: 100%; /* Ensure the section takes full width for better centering */
-  max-width: 800px; /* Optional: set a max-width for the section blocks */
-  background-color: #ecf0f1; /* Light grey background for section blocks */
-  border: 1px solid #bdc3c7; /* Soft border color */
+  width: 100%;
+  max-width: 800px;
+  background-color: #ecf0f1; /* Solid light grey background for section blocks */
+  border: 1px solid #bdc3c7;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for section depth */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .test-section {
   margin-top: 20px;
-  border: 1px solid #bdc3c7; /* Soft border color for tests */
+  border: 1px solid #bdc3c7;
   padding: 20px;
   border-radius: 10px;
-  background-color: #ecf0f1; /* Light grey background for test section */
+  background-color: #ecf0f1; /* Light grey background for readability */
 }
 
 .assessment-categories {
@@ -94,7 +103,7 @@ h3 {
 .assessment-categories li {
   flex: 1;
   padding: 10px;
-  background-color: #512066; /* Purple for category */
+  background-color: #512066;
   color: white;
   border-radius: 10px;
   cursor: pointer;
@@ -103,18 +112,18 @@ h3 {
 }
 
 .assessment-categories li:hover {
-  background-color: #6d0c97; /* Darker purple on hover */
+  background-color: #6d0c97;
   transform: scale(1.05);
 }
 
 .assessment-categories li.active {
-  background-color: #0077c7; /* Active category color */
+  background-color: #0077c7;
 }
 
 label {
   display: block;
   margin: 10px 0;
-  color: #333; /* Darker label color */
+  color: #333;
 }
 
 input[type="text"],
@@ -123,7 +132,7 @@ select {
   width: 100%;
   padding: 10px;
   margin: 5px 0;
-  border: 2px solid #2980b9; /* Primary border color */
+  border: 2px solid #2980b9;
   border-radius: 5px;
   outline: none;
   transition: border-color 0.3s;
@@ -132,11 +141,11 @@ select {
 input[type="text"]:focus,
 input[type="number"]:focus,
 select:focus {
-  border-color: #2c3e50; /* Focus border color */
+  border-color: #2c3e50;
 }
 
 button {
-  background-color: #2980b9; /* Button color */
+  background-color: #2980b9;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -147,12 +156,12 @@ button {
 }
 
 button:hover {
-  background-color: #1f6d99; /* Darker button on hover */
+  background-color: #1f6d99;
   transform: scale(1.05);
 }
 
 button:disabled {
-  background-color: #bdc3c7; /* Disabled button color */
+  background-color: #bdc3c7;
   cursor: not-allowed;
 }
 
