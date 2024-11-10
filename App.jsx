@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 
 function App() {
-  const [activeSection, setActiveSection] = useState('about');
-  const [servicesLoggedIn, setServicesLoggedIn] = useState(false);
-  const [doctorLoggedIn, setDoctorLoggedIn] = useState(false);
+    const [activeSection, setActiveSection] = useState('about'); 
+    const [doctorLoggedIn, setDoctorLoggedIn] = useState(false); 
+    const [result, setResult] = useState(null);
 
 
   const [name, setName] = useState('');
@@ -26,12 +27,18 @@ function App() {
     </div>
   );
 
-  const Result = () => (
-    <div>
-      <h2>About Us</h2>
-      <p>This is an autism detection tool designed to help identify early signs of autism in children.</p>
-    </div>
-  );
+  const Result = ({ result }) => { 
+    const resultStyle = { color: result.prediction === 1 ? 'green' : result.prediction === 2 ? 'blue' : 'black', };
+    return ( 
+    <div> 
+        
+    <h2>Prediction Result</h2> 
+    <p><strong>Patient ID:</strong> {result.patientId}</p> 
+    <p><strong>Age:</strong> {result.age}</p> 
+    <p><strong>Prediction:</strong> <span style={resultStyle}>{result.prediction === 1 ? 'Not Autistic' : 'Autistic'}</span></p>
+    <p><strong>Probability:</strong> {result.probability.join(', ')}</p> 
+    
+    </div> ); };
 
 
 const Services = () => {
@@ -110,8 +117,8 @@ const Services = () => {
   const Assessment = () => {
       const [selectedCategory, setSelectedCategory] = useState('13+');
       const [testResults, setTestResults] = useState({
-          '0-3': { patientId:'',SEX:'',AGE:'',ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '' },
-          '3-5': { patientId:'',SEX:'',AGE:'',FIQ: '', VIQ: '', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: ''},
+          '0-3': { patientId:'',SEX:'',AGE:'',FIQ:'',VIQ:'',PIQ:'',ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '',AQ_TOTAL:'' },
+          '3-5': { patientId:'',SEX:'',AGE:'',FIQ: '', VIQ: '',PIQ:'', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '',AQ_TOTAL:''},
           '6-12': {patientId:'',SEX:'',AGE:'', FIQ: '', VIQ: '', PIQ: '', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '', AQ_TOTAL: '' },
           '13+': { patientId:'',SEX:'',AGE:'',FIQ: '', VIQ: '', PIQ: '', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '', AQ_TOTAL: '' },
       });
@@ -145,8 +152,10 @@ const Services = () => {
             });
             
             if (response.ok) {
-                const result = await response.json();
-                alert(`Prediction: ${result.prediction}, Probability: ${result.probability}`);
+                
+                const result = await response.json(); 
+                setResult(result); // Set the result in state 
+                setActiveSection('result');
             } else {
                 console.error('Failed to submit data:', response.statusText);
             }
@@ -184,6 +193,18 @@ const Services = () => {
                               <input type="number" value={testResults['0-3'].SEX} onChange={(e) => handleTestResultChange('0-3', 'SEX', e.target.value)} />
                           </label>
                           <label>
+                              FIQ(PUT 0):
+                              <input type="number" value={testResults['0-3'].FIQ} onChange={(e) => handleTestResultChange('0-3', 'FIQ', e.target.value)} />
+                          </label>
+                          <label>
+                              VIQ(PUT 0):
+                              <input type="number" value={testResults['0-3'].VIQ} onChange={(e) => handleTestResultChange('0-3', 'VIQ', e.target.value)} />
+                          </label>
+                          <label>
+                              PIQ (PUT 0):
+                              <input type="number" value={testResults['0-3'].PIQ} onChange={(e) => handleTestResultChange('0-3', 'PIQ', e.target.value)} />
+                          </label>
+                          <label>
                               ADOS_TOTAL:
                               <input type="number" value={testResults['0-3'].ADOS_TOTAL} onChange={(e) => handleTestResultChange('0-3', 'ADOS_TOTAL', e.target.value)} />
                           </label>
@@ -202,6 +223,10 @@ const Services = () => {
                           <label>
                               SRS_RAW_TOTAL:
                               <input type="number" value={testResults['0-3'].SRS_RAW_TOTAL} onChange={(e) => handleTestResultChange('0-3', 'SRS_RAW_TOTAL', e.target.value)} />
+                          </label>
+                          <label>
+                              AQ_TOTAL:
+                              <input type="number" value={testResults['0-3'].AQ_TOTAL} onChange={(e) => handleTestResultChange('0-3', 'AQ_TOTAL', e.target.value)} />
                           </label>
                           
                       </>
@@ -230,6 +255,10 @@ const Services = () => {
                               <input type="number" value={testResults['3-5'].VIQ} onChange={(e) => handleTestResultChange('3-5', 'VIQ', e.target.value)} />
                           </label>
                           <label>
+                              PIQ (PUT 0):
+                              <input type="number" value={testResults['3-5'].PIQ} onChange={(e) => handleTestResultChange('3-5', 'PIQ', e.target.value)} />
+                          </label>
+                          <label>
                               ADOS_TOTAL:
                               <input type="number" value={testResults['3-5'].ADOS_TOTAL} onChange={(e) => handleTestResultChange('3-5', 'ADOS_TOTAL', e.target.value)} />
                           </label>
@@ -248,6 +277,10 @@ const Services = () => {
                           <label>
                               SRS_RAW_TOTAL:
                               <input type="number" value={testResults['3-5'].SRS_RAW_TOTAL} onChange={(e) => handleTestResultChange('3-5', 'SRS_RAW_TOTAL', e.target.value)} />
+                          </label>
+                          <label>
+                              AQ_TOTAL:
+                              <input type="number" value={testResults['3-5'].AQ_TOTAL} onChange={(e) => handleTestResultChange('3-5', 'AQ_TOTAL', e.target.value)} />
                           </label>
                           
                       </>
@@ -531,30 +564,28 @@ const Services = () => {
     );
   };
 
-  return (
-    <div className="app-container">
-      <nav>
-        <h2>Navigation</h2>
-        <ul>
-          <li onClick={() => setActiveSection('about')} className="nav-item">About</li>
-          <li onClick={() => setActiveSection('services')} className="nav-item">Register</li>
-          <li onClick={() => setActiveSection('History')} className="nav-item">History</li>
-          <li onClick={() => setActiveSection('doctor-login')} className="nav-item">Doctor Login</li>
-          {doctorLoggedIn && <li onClick={() => setActiveSection('assessment')} className="nav-item">Assessment</li>}
-          <li onClick={() => setActiveSection('result')} className="nav-item">Result</li>
-        </ul>
-      </nav>
-      <div className="content">
-        {activeSection === 'about' && <About />}
-        {activeSection === 'services' && <Services />}
-        {activeSection === 'History' && <History />}
-        {activeSection === 'doctor-login' && <DoctorLogin />}
-        {activeSection === 'result' && <Result />}
-        {doctorLoggedIn && activeSection === 'assessment' && <Assessment />}
-        
-      </div>
-    </div>
-  );
+  return ( <div className="app-container"> 
+  <nav> 
+    <h2>Navigation</h2> 
+    <ul> 
+        <li onClick={() => setActiveSection('about')} className="nav-item">About</li> 
+        <li onClick={() => setActiveSection('services')} className="nav-item">Register</li> 
+        <li onClick={() => setActiveSection('History')} className="nav-item">History</li> 
+        <li onClick={() => setActiveSection('doctor-login')} className="nav-item">Doctor Login</li> 
+        {doctorLoggedIn && <li onClick={() => setActiveSection('assessment')} className="nav-item">Assessment</li>} 
+        <li onClick={() => setActiveSection('result')} className="nav-item">Result</li> 
+    </ul> 
+    </nav> 
+    <div className="content"> 
+            {activeSection === 'about' && <About />} 
+            {activeSection === 'services' && <Services />} 
+            {activeSection === 'History' && <History />} 
+            {activeSection === 'doctor-login' && <DoctorLogin setActiveSection={setActiveSection} />} 
+            {activeSection === 'result' && result && <Result result={result} />} 
+            {doctorLoggedIn && activeSection === 'assessment' && <Assessment setResult={setResult} />} 
+        </div> 
+    </div> 
+    );
 
 
 }
