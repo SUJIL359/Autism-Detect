@@ -108,12 +108,12 @@ const Services = () => {
 
 
   const Assessment = () => {
-      const [selectedCategory, setSelectedCategory] = useState('0-3');
+      const [selectedCategory, setSelectedCategory] = useState('13+');
       const [testResults, setTestResults] = useState({
-          '0-3': { ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '', DX_GROUP: '' },
-          '3-5': { FIQ: '', VIQ: '', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '', DX_GROUP: '' },
-          '6-12': { FIQ: '', VIQ: '', PIQ: '', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '', AQ_TOTAL: '', DX_GROUP: '' },
-          '13+': { FIQ: '', VIQ: '', PIQ: '', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '', AQ_TOTAL: '', DX_GROUP: '' },
+          '0-3': { patientId:'',SEX:'',AGE:'',ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '' },
+          '3-5': { patientId:'',SEX:'',AGE:'',FIQ: '', VIQ: '', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: ''},
+          '6-12': {patientId:'',SEX:'',AGE:'', FIQ: '', VIQ: '', PIQ: '', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '', AQ_TOTAL: '' },
+          '13+': { patientId:'',SEX:'',AGE:'',FIQ: '', VIQ: '', PIQ: '', ADOS_TOTAL: '', ADOS_COMM: '', ADOS_SOCIAL: '', ADOS_STEREO_BEHAV: '', SRS_RAW_TOTAL: '', AQ_TOTAL: '' },
       });
   
       const handleCategoryClick = (category) => setSelectedCategory(category);
@@ -125,10 +125,35 @@ const Services = () => {
           }));
       };
   
-      const handleSubmit = () => {
-          console.log("Submitted Results:", testResults[selectedCategory]);
-          alert(`Results for ${selectedCategory} submitted successfully!`);
-      };
+      const handleSubmit = async () => {
+        const dataToSend = {
+            ...testResults[selectedCategory], // send only the selected category's data
+        };
+        console.log('Data to send:', dataToSend);
+        if (!dataToSend.AGE || isNaN(dataToSend.AGE)) {
+            alert('Please enter a valid ADOS_TOTAL value.');
+            return;
+        }
+    
+        try {
+            const response = await fetch('http://127.0.0.1:8000/model/predict-autism/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dataToSend),
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                alert(`Prediction: ${result.prediction}, Probability: ${result.probability}`);
+            } else {
+                console.error('Failed to submit data:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error during submission:', error);
+        }
+    };
   
       return (
           <div className="assessment-content">
